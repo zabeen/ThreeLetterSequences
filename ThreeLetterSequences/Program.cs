@@ -10,12 +10,42 @@ namespace ThreeLetterSequences
 {
     class Program
     {
+        static Dictionary<string, int> dict = new Dictionary<string, int>();
+
         static void Main(string[] args)
         {
+            CreateDictionary();
+
             string input = File.ReadAllText("SampleText.txt");
-            Regex regex = new Regex("tra", RegexOptions.IgnoreCase);
-            Console.WriteLine(regex.Matches(input).Count);
+            List<string> keys = dict.Keys.ToList();
+
+            foreach (string key in keys)
+            {
+                Regex regex = new Regex(key, RegexOptions.IgnoreCase);
+                dict[key] = regex.Matches(input).Count;
+                Console.Write(key + " ");
+            }
+
+            Console.WriteLine(dict["tra"]);
+            Console.WriteLine(dict["pre"]);
             Console.ReadLine();
+        }
+
+
+        static void CreateDictionary()
+        {
+            for (char c1 = 'a'; c1 <= 'z'; c1++)
+            {
+                for (char c2 = 'a'; c2 <= 'z'; c2++)
+                {
+                    for (char c3 = 'a'; c3 <= 'z'; c3++)
+                    {
+                        string tls = c1.ToString() + c2.ToString() + c3.ToString();
+                        dict.Add(tls, 0);
+                    }
+                }          
+            }
+
         }
     }
 }
