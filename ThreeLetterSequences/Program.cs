@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ThreeLetterSequences
 {
@@ -12,15 +13,8 @@ namespace ThreeLetterSequences
         static void Main(string[] args)
         {
             string input = File.ReadAllText("SampleText.txt");
-            int counter = 0;
-
-            for (int i = 0; i <  input.Length; i++)
-            {
-                if (input[i] == 't' && input[i + 1] == 'r' && input[i + 2] == 'a')
-                    counter++;
-            }
-
-            Console.WriteLine(counter);
+            Regex regex = new Regex("tra");
+            Console.WriteLine(regex.Matches(input).Count);
             Console.ReadLine();
         }
     }
