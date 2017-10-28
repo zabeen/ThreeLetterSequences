@@ -13,7 +13,7 @@ namespace ThreeLetterSequences
         static void Main(string[] args)
         {
             string input = File.ReadAllText("SampleText.txt");
-            Regex regex = new Regex("tra");
+            Regex regex = new Regex("tra", RegexOptions.IgnoreCase);
             Console.WriteLine(regex.Matches(input).Count);
             Console.ReadLine();
         }
