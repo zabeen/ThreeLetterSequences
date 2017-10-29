@@ -23,11 +23,11 @@ namespace ThreeLetterSequences
             {
                 Regex regex = new Regex(key, RegexOptions.IgnoreCase);
                 dict[key] = regex.Matches(input).Count;
-                Console.Write(key + " ");
+                Console.Write("...");
             }
 
-            Console.WriteLine(dict["tra"]);
-            Console.WriteLine(dict["pre"]);
+            Console.WriteLine(string.Join(", ", dict.Where(d => d.Value == 63).Select(d => d.Key).ToList()));
+
             Console.ReadLine();
         }
 
