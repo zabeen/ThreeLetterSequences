@@ -24,7 +24,7 @@ namespace ThreeLetterSequences
                 return;
             }
 
-            CreateDictionary();
+            CreateDictionary(3);
 
             string input = File.ReadAllText("SampleText.txt");
             List<string> keys = dict.Keys.ToList();
@@ -42,20 +42,20 @@ namespace ThreeLetterSequences
         }
 
 
-        static void CreateDictionary()
+        static void CreateDictionary(int tlsLength, string str = "")
         {
-            for (char c1 = 'a'; c1 <= 'z'; c1++)
+            if (str.Length == tlsLength)
             {
-                for (char c2 = 'a'; c2 <= 'z'; c2++)
-                {
-                    for (char c3 = 'a'; c3 <= 'z'; c3++)
-                    {
-                        string tls = c1.ToString() + c2.ToString() + c3.ToString();
-                        dict.Add(tls, 0);
-                    }
-                }          
+                dict.Add(str, 0);
+                return;
             }
-
+            else
+            {
+                for (char c = 'a'; c <= 'z'; c++)
+                {
+                    CreateDictionary(tlsLength, str + c.ToString());
+                }
+            }
         }
     }
 }
