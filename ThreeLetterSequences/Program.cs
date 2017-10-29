@@ -14,6 +14,16 @@ namespace ThreeLetterSequences
 
         static void Main(string[] args)
         {
+            Console.Write("Value: ");
+            string value = Console.ReadLine();
+            int val = 0;
+
+            if (!int.TryParse(value, out val))
+            {
+                Console.WriteLine("Error, must provide int.");
+                return;
+            }
+
             CreateDictionary();
 
             string input = File.ReadAllText("SampleText.txt");
@@ -26,7 +36,7 @@ namespace ThreeLetterSequences
                 Console.Write("...");
             }
 
-            Console.WriteLine(string.Join(", ", dict.Where(d => d.Value == 63).Select(d => d.Key).ToList()));
+            Console.WriteLine(string.Join(", ", dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
 
             Console.ReadLine();
         }
