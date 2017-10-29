@@ -10,46 +10,35 @@ namespace ThreeLetterSequences
 {
     class Program
     {
-        static Dictionary<string, int> dict = new Dictionary<string, int>();
+        static Dictionary<string, int> _dict = new Dictionary<string, int>();
+        static string _input = "";
 
         static void Main(string[] args)
         {
-            Console.Write("Value: ");
-            string value = Console.ReadLine();
-            int val = 0;
+            Console.WriteLine("Reading file...");
+            ReadInFile("SampleText.txt");
 
-            if (!int.TryParse(value, out val))
-            {
-                Console.WriteLine("Error, must provide int.");
-                Console.ReadLine();
-                return;
-            }
-
+            Console.WriteLine("Creating dictionary...");
             CreateDictionary(3);
 
-            string input = File.ReadAllText("SampleText.txt");
-            List<string> keys = dict.Keys.ToList();
+            int val = GetTLSCount();
 
-            foreach (string key in keys)
-            {
-                Regex regex = new Regex(key, RegexOptions.IgnoreCase);
-                dict[key] = regex.Matches(input).Count;
-                Console.Write(".");
-            }
-
-            Console.WriteLine($"\nTLSs with count {value}:\n" + string.Join(", ", dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
-
-            Console.WriteLine("\n10 most common TLSs:\n" + string.Join("\n", dict.OrderByDescending(d => d.Value).Take(10).Select(d => $"{d.Key} - {d.Value}").ToList()));
+            Console.WriteLine($"\nTLSs with count {val}:\n" + string.Join(", ", _dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
+            Console.WriteLine("\n10 most common TLSs:\n" + string.Join("\n", _dict.OrderByDescending(d => d.Value).Take(10).Select(d => $"{d.Key} - {d.Value}").ToList()));
 
             Console.ReadLine();
         }
 
+        static void ReadInFile(string filePath)
+        {
+            _input = File.ReadAllText(filePath);
+        }
 
         static void CreateDictionary(int tlsLength, string str = "")
         {
             if (str.Length == tlsLength)
             {
-                dict.Add(str, 0);
+                _dict.Add(str, new Regex(str, RegexOptions.IgnoreCase).Matches(_input).Count);
                 return;
             }
             else
@@ -59,6 +48,22 @@ namespace ThreeLetterSequences
                     CreateDictionary(tlsLength, str + c.ToString());
                 }
             }
+        }
+
+        static int GetTLSCount()
+        {
+            string value = "";
+            int val = 0;
+
+            do
+            {
+                Console.Write("Return TLSs with count of: ");
+                value = Console.ReadLine();
+
+            }
+            while (!int.TryParse(value, out val));
+
+            return val;
         }
     }
 }
