@@ -21,6 +21,7 @@ namespace ThreeLetterSequences
             if (!int.TryParse(value, out val))
             {
                 Console.WriteLine("Error, must provide int.");
+                Console.ReadLine();
                 return;
             }
 
@@ -33,10 +34,12 @@ namespace ThreeLetterSequences
             {
                 Regex regex = new Regex(key, RegexOptions.IgnoreCase);
                 dict[key] = regex.Matches(input).Count;
-                Console.Write("...");
+                Console.Write(".");
             }
 
-            Console.WriteLine(string.Join(", ", dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
+            Console.WriteLine($"\nTLSs with count {value}:\n" + string.Join(", ", dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
+
+            Console.WriteLine("\n10 most common TLSs:\n" + string.Join("\n", dict.OrderByDescending(d => d.Value).Take(10).Select(d => $"{d.Key} - {d.Value}").ToList()));
 
             Console.ReadLine();
         }
