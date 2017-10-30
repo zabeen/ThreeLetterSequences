@@ -10,7 +10,7 @@ namespace ThreeLetterSequences
 {
     class Program
     {
-        static Dictionary<string, int> _dict = new Dictionary<string, int>();
+        static Dictionary<string, int> _tlsDict = new Dictionary<string, int>();
         static string _fileContents = "";
 
         static void Main(string[] args)
@@ -19,12 +19,13 @@ namespace ThreeLetterSequences
             ImportFileContentsAsString("SampleText.txt");
 
             Console.WriteLine("Creating dictionary...");
-            CreateDictionary(3);
+            CreateTLSDictionary(3);
 
-            int val = GetTLSCount();
-            Console.WriteLine($"\nTLSs with count {val}:\n" + string.Join(", ", _dict.Where(d => d.Value == val).Select(d => d.Key).ToList()));
+            int matchCount = GetIntFromUser("Return TLSs with count of: ");
+            Console.WriteLine($"\nTLSs with count {matchCount}:\n" + string.Join(", ", _tlsDict.Where(d => d.Value == matchCount).Select(d => d.Key).ToList()));
 
-            Console.WriteLine("\n10 most common TLSs:\n" + string.Join("\n", _dict.OrderByDescending(d => d.Value).Take(10).Select(d => $"{d.Key} - {d.Value}").ToList()));
+            int topTLS = GetIntFromUser("\nHow many of the most common TLSs do you wish to see? ");
+            Console.WriteLine($"\nThe {topTLS} most common TLSs:\n" + string.Join("\n", _tlsDict.OrderByDescending(d => d.Value).Take(topTLS).Select(d => $"{d.Key} - {d.Value}").ToList()));
 
             Console.ReadLine();
         }
@@ -39,30 +40,31 @@ namespace ThreeLetterSequences
             _fileContents = regex.Replace(_fileContents, "");
         }
 
-        static void CreateDictionary(int tlsLength, string str = "")
+        static void CreateTLSDictionary(int tlsLength, string str = "")
         {
+            // if str length has reached required TLS length, then add it to the dict, along with its match count
             if (str.Length == tlsLength)
             {
-                _dict.Add(str, new Regex(str, RegexOptions.IgnoreCase).Matches(_fileContents).Count);
+                _tlsDict.Add(str, new Regex(str, RegexOptions.IgnoreCase).Matches(_fileContents).Count);
                 return;
             }
-            else
-            {
+            else // iterate through a-z, and call this method recursively, passing in extended str
+            { 
                 for (char c = 'a'; c <= 'z'; c++)
                 {
-                    CreateDictionary(tlsLength, str + c.ToString());
+                    CreateTLSDictionary(tlsLength, str + c.ToString());
                 }
             }
         }
 
-        static int GetTLSCount()
+        static int GetIntFromUser(string msg)
         {
             string value = "";
             int val = 0;
 
             do
             {
-                Console.Write("Return TLSs with count of: ");
+                Console.Write(msg);
                 value = Console.ReadLine();
 
             }
